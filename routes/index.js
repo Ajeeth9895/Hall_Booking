@@ -53,13 +53,15 @@ router.post('/newBooking', function (req, res) {
   try {
     let booked = false;
     room.map((e) => {
-      if (e.roomId === req.body.roomId) {
+      if (e.roomId === req.body.roomId && e.bookedStatus === 'available') {
         e.customerName = req.body.customerName,
           e.date = req.body.date,
           e.startTime = req.body.startTime,
           e.endTime = req.body.endTime,
-          e.bookedStatus = 'Occupied'
-        booked = true
+          e.bookedStatus = 'Occupied',
+          booked = true;
+      } else {
+        booked = false;
       }
     })
 
@@ -86,23 +88,23 @@ router.post('/newBooking', function (req, res) {
 
 /* Get Booked Room details */
 router.get('/bookedRoom', function (req, res) {
-  let data =[]
+  let data = []
   try {
     room.map((e) => {
       if (e.bookedStatus == 'Occupied') {
         data.push({
-        roomId:e.roomId,
-        bookedStatus:e.bookedStatus,
-        customerName:e.customerName,
-        date:e.date,
-        startTime:e.startTime,
-        endTime:e.endTime
-      })
+          roomId: e.roomId,
+          bookedStatus: e.bookedStatus,
+          customerName: e.customerName,
+          date: e.date,
+          startTime: e.startTime,
+          endTime: e.endTime
+        })
       }
     })
-   res.status(200).send({
-    data
-   })
+    res.status(200).send({
+      data
+    })
 
   } catch (error) {
     console.log(error);
@@ -119,21 +121,21 @@ router.get('/bookedRoom', function (req, res) {
 
 /* Get Booked Room customer details */
 router.get('/bookedCustomer', function (req, res) {
-  let data =[]
+  let data = []
   try {
     room.map((e) => {
       if (e.bookedStatus == 'Occupied') {
         data.push({
-        customerName:e.customerName,
-        date:e.date,
-        startTime:e.startTime,
-        endTime:e.endTime
-      })
+          customerName: e.customerName,
+          date: e.date,
+          startTime: e.startTime,
+          endTime: e.endTime
+        })
       }
     })
-   res.status(200).send({
-    data
-   })
+    res.status(200).send({
+      data
+    })
 
   } catch (error) {
     console.log(error);
